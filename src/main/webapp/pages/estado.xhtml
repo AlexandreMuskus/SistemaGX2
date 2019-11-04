@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body>
+<f:loadBundle basename="br.com.gx2.resources.rotulos" var="msgs" />
+	<h:messages />
+	<h:form>
+		<h:panelGrid columns="3">
+		
+			<h:outputLabel value="#{msgs.codigo}" />
+			<h:inputText id="codigo" value="#{contatoController.contatoSelecionado.idContato}" />
+			<h:message for="codigo"></h:message>
+			
+			<h:outputLabel value="#{msgs.nome}" />
+			<h:inputText id="nome" value="#{contatoController.contatoSelecionado.nome}" />
+			<h:message for="nome"></h:message>
+
+		</h:panelGrid>
+		<p:panelGrid columns="6">
+			<h:commandButton action="#{contatoController.salvar}" value="Salvar">
+				<f:ajax execute="@form" render="@all" />
+			</h:commandButton>
+
+			<h:commandButton action="#{contatoController.pesquisar}" value="Pesquisar">
+				<f:ajax execute="@form" render="@all" />
+			</h:commandButton>
+
+			<h:commandButton action="#{contatoController.excluir}" value="Excluír" update="contato">
+				<f:ajax execute="@form" render="@all" />
+			</h:commandButton>
+			
+			<h:commandButton action="#{contatoController.limpar}" value="Limpar"
+				update="contato" />
+		
+		</p:panelGrid>
+		<h:dataTable value="#{contatoController.contatos}" var="contato">
+			
+			<h:column>
+				<f:facet name="header">#{msgs.codigo}</f:facet>
+				<h:outputText value="#{contato.idContato}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">#{msgs.nome}</f:facet>
+				<h:outputText value="#{contato.nome}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">#{msgs.acoes}</f:facet>
+				<h:commandLink value="Editar">
+					<f:setPropertyActionListener value="#{contato}" target="#{contatoController.contatoSelecionado}"></f:setPropertyActionListener>
+				</h:commandLink> |
+				<h:commandLink value="Exluír" action="#{contatoController.excluir}"/>
+			</h:column>
+
+		</h:dataTable>
+
+	</h:form>
+</h:body>
+</html>
